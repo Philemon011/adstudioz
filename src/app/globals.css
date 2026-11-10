@@ -1,0 +1,194 @@
+@import "tailwindcss";
+
+/* Le mode sombre est piloté par la classe .dark sur <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- Palette de marque (mesurée sur le logo) ---------- */
+:root {
+  --brand-red: #c60800;
+  --brand-red-deep: #810000;
+  --brand-gold: #ffba00;
+  --brand-black: #000000;
+  --brand-white: #ffffff;
+
+  /* ---------- Thème clair ---------- */
+  --background: #f4f4f4;
+  --surface: #ffffff;
+  --surface-muted: #efefef;
+  --foreground: #111111;
+  --muted-foreground: #6b6b6b;
+  --border: rgb(0 0 0 / 0.08);
+  --primary: #c60800;
+  --primary-foreground: #ffffff;
+  --accent: #ffba00;
+  --accent-foreground: #111111;
+}
+
+/* ---------- Thème sombre ---------- */
+.dark {
+  --background: #0a0a0a;
+  --surface: #141414;
+  --surface-muted: #1d1d1d;
+  --foreground: #f5f5f5;
+  --muted-foreground: #a1a1a1;
+  --border: rgb(255 255 255 / 0.1);
+  --primary: #e02a1f;
+  --primary-foreground: #ffffff;
+  --accent: #ffba00;
+  --accent-foreground: #111111;
+}
+
+/* ---------- Tokens exposés à Tailwind ---------- */
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-brand-red: var(--brand-red);
+  --color-brand-red-deep: var(--brand-red-deep);
+  --color-brand-gold: var(--brand-gold);
+
+  /* Polices */
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-google-sans-flex), ui-sans-serif, system-ui,
+    sans-serif;
+
+  /* Espacement des lettres (titres très serrés) */
+  --tracking-display: -0.055em;
+  --tracking-heading: -0.04em;
+
+  /* Rayons (cartes et images très arrondies) */
+  --radius-media: 1.25rem;
+  --radius-card: 1.75rem;
+}
+
+/* ---------- Base ---------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: var(--tracking-heading);
+    line-height: 1.05;
+  }
+
+  ::selection {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+
+/* ---------- Hero : animations ---------- */
+@keyframes hero-zoom {
+  from {
+    transform: scale(1.12);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes hero-line {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-zoom {
+  animation: hero-zoom var(--hero-zoom-duration, 7700ms) ease-out both;
+  animation-play-state: var(--hero-play, running);
+}
+
+.hero-progress {
+  animation: hero-progress var(--hero-duration, 6500ms) linear both;
+  animation-play-state: var(--hero-play, running);
+}
+
+.hero-line {
+  animation: hero-line 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+
+.hero-rise {
+  animation: hero-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-zoom,
+  .hero-progress,
+  .hero-line,
+  .hero-rise {
+    animation: none;
+  }
+}
+
+/* ---------- Apparition au scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
