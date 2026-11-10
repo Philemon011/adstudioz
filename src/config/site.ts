@@ -21,8 +21,8 @@ export const siteConfig = {
       // { label: "+229 01 53 81 72 60", href: "tel:+2290153817260" },
     ],
     // Format international, sans espaces ni "+"
-    whatsapp: "2290153461205",
-    whatsappLabel: "+229 01 53 46 12 05",
+    whatsapp: "2290195187846",
+    whatsappLabel: "+229 01 95 18 78 46",
   },
 
   social: {
