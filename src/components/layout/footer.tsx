@@ -6,6 +6,12 @@ import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { CurrentYear } from "@/components/ui/current-year";
 import { SocialLinks } from "@/components/ui/social-links";
 
+const credit = {
+  prefix: "Conçu et développé par",
+  name: "Lumière Etounde",
+  href: "https://philemondev.tech/",
+};
+
 const linkClass =
   "inline-block rounded-sm text-muted-foreground transition-colors duration-300 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary";
 
@@ -118,10 +124,26 @@ export function Footer() {
 
         {/* Barre du bas */}
         <div className="mt-14 flex flex-col gap-4 border-t border-border pt-6 text-xs text-muted-foreground sm:mt-16 md:flex-row md:items-center md:justify-between">
-          <p>
-            © <CurrentYear /> {siteConfig.name}. Tous droits réservés.
-          </p>
+          <div className="space-y-1.5">
+            <p>
+              © <CurrentYear /> {siteConfig.name}. Tous droits réservés.
+            </p>
+            <p>
+              {credit.prefix}{" "}
+              <a
+                href={credit.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-sm text-foreground underline-offset-4 transition-colors duration-300 hover:text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+              >
+                {credit.name}
+                <span className="sr-only"> (s’ouvre dans un nouvel onglet)</span>
+              </a>
+            </p>
+          </div>
+
           <p className="md:text-center">{siteConfig.descriptor}</p>
+
           <a
             href="#"
             className="inline-flex w-fit items-center gap-2 rounded-full border border-border px-4 py-2 text-foreground transition-colors duration-300 hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
