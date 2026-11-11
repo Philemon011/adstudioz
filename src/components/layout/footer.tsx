@@ -11,8 +11,6 @@ const linkClass =
 const labelClass = "text-xs text-muted-foreground/80";
 
 export function Footer() {
-  const otherPhones = siteConfig.contact.phones.slice(1);
-
   return (
     <footer className="px-3 pb-3 pt-3 sm:px-6 sm:pb-6 sm:pt-6">
       <div className="mx-auto max-w-7xl rounded-card bg-surface p-5 sm:p-8 md:p-12 lg:p-16">
@@ -91,7 +89,7 @@ export function Footer() {
                   <span className="sr-only"> (s’ouvre dans un nouvel onglet)</span>
                 </a>
               </li>
-              {otherPhones.map((phone) => (
+              {siteConfig.contact.phones.map((phone) => (
                 <li key={phone.href}>
                   <a href={phone.href} className={linkClass}>
                     {phone.label}
@@ -149,7 +147,7 @@ export function Footer() {
               <path d="M12 19V5" />
               <path d="m5 12 7-7 7 7" />
             </svg>
-                    </a>
+          </a>
         </div>
       </div>
     </footer>

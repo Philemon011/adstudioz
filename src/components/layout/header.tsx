@@ -4,18 +4,112 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { siteConfig } from "@/config/site";
+import { siteConfig, type NavItem } from "@/config/site";
 import { CtaLink } from "@/components/ui/cta-link";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const desktopLinks = siteConfig.navigation.filter((link) => link.href !== "/");
 
+function isActivePath(pathname: string, href: string) {
+  return href === "/" ? pathname === "/" : pathname.startsWith(href);
+}
+
+function navLinkClass(active: boolean) {
+  return `rounded-full px-4 py-2.5 text-sm transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+    active
+      ? "bg-surface-muted text-foreground"
+      : "text-muted-foreground hover:text-foreground"
+  }`;
+}
+
+/* Lien de navigation desktop avec sous-menu déroulant */
+function DesktopDropdown({
+  link,
+  pathname,
+}: {
+  link: NavItem;
+  pathname: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const active = isActivePath(pathname, link.href);
+
+  return (
+    <li
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onFocus={() => setOpen(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") setOpen(false);
+      }}
+    >
+      <Link
+        href={link.href}
+        onClick={() => setOpen(false)}
+        aria-current={active ? "page" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open}
+        className={`inline-flex items-center gap-1.5 ${navLinkClass(active)}`}
+      >
+        {link.label}
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          className={`size-3.5 transition-transform duration-300 ${
+            open ? "rotate-180" : ""
+          }`}
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </Link>
+
+      {/* Le padding du haut comble l'écart entre le lien et le panneau */}
+      <div
+        className={`absolute left-0 top-full z-10 pt-3 transition-[opacity,visibility] duration-200 ${
+          open ? "visible opacity-100" : "invisible opacity-0"
+        }`}
+      >
+        <ul className="min-w-64 rounded-3xl border border-border bg-surface p-2 shadow-lg">
+          {link.children?.map((child) => {
+            const childActive = pathname === child.href;
+            return (
+              <li key={child.href}>
+                <Link
+                  href={child.href}
+                  onClick={() => setOpen(false)}
+                  aria-current={childActive ? "page" : undefined}
+                  className="flex items-center justify-between gap-6 rounded-2xl px-4 py-2.5 text-sm transition-colors duration-300 hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                >
+                  {child.label}
+                  {childActive && (
+                    <span
+                      aria-hidden="true"
+                      className="size-1.5 rounded-full bg-primary"
+                    />
+                  )}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </li>
+  );
+}
+
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href: string) => isActivePath(pathname, href);
 
   // Menu mobile : verrouille le scroll, ferme avec Échap ou au passage en desktop
   useEffect(() => {
@@ -73,21 +167,25 @@ export function Header() {
           {/* Navigation desktop */}
           <nav aria-label="Navigation principale" className="hidden xl:block">
             <ul className="flex items-center gap-1">
-              {desktopLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    aria-current={isActive(link.href) ? "page" : undefined}
-                    className={`rounded-full px-4 py-2.5 text-sm transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-                      isActive(link.href)
-                        ? "bg-surface-muted text-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              {desktopLinks.map((link) =>
+                link.children ? (
+                  <DesktopDropdown
+                    key={link.href}
+                    link={link}
+                    pathname={pathname}
+                  />
+                ) : (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      aria-current={isActive(link.href) ? "page" : undefined}
+                      className={navLinkClass(isActive(link.href))}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ),
+              )}
             </ul>
           </nav>
 
@@ -140,26 +238,51 @@ export function Header() {
           <nav aria-label="Navigation mobile">
             <ul className="flex flex-col">
               {siteConfig.navigation.map((link, index) => (
-                <li key={link.href} className="border-b border-border">
+                <li
+                  key={link.href}
+                  style={{
+                    transitionDelay: open ? `${80 + index * 40}ms` : "0ms",
+                  }}
+                  className={`border-b border-border transition-all duration-500 ${
+                    open ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                  }`}
+                >
                   <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
                     aria-current={isActive(link.href) ? "page" : undefined}
-                    style={{
-                      transitionDelay: open ? `${80 + index * 40}ms` : "0ms",
-                    }}
-                    className={`block py-3.5 font-heading text-4xl tracking-heading transition-all duration-500 sm:py-4 sm:text-5xl ${
+                    className={`block py-3.5 font-heading text-4xl tracking-heading sm:py-4 sm:text-5xl ${
                       isActive(link.href)
                         ? "text-foreground"
                         : "text-muted-foreground"
-                    } ${
-                      open
-                        ? "translate-y-0 opacity-100"
-                        : "translate-y-4 opacity-0"
                     }`}
                   >
                     {link.label}
                   </Link>
+
+                  {/* Sous-menu : pastilles sous le lien parent */}
+                  {link.children && (
+                    <ul className="flex flex-wrap gap-2 pb-5">
+                      {link.children.map((child) => (
+                        <li key={child.href}>
+                          <Link
+                            href={child.href}
+                            onClick={() => setOpen(false)}
+                            aria-current={
+                              pathname === child.href ? "page" : undefined
+                            }
+                            className={`inline-flex rounded-full border px-4 py-2 text-sm transition-colors duration-300 ${
+                              pathname === child.href
+                                ? "border-foreground bg-foreground text-background"
+                                : "border-border text-muted-foreground hover:text-foreground"
+                            }`}
+                          >
+                            {child.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>

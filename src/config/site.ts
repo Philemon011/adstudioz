@@ -1,3 +1,31 @@
+import { portfolioCategories } from "@/config/portfolio-categories";
+
+export type NavItem = {
+  label: string;
+  href: string;
+  /** Sous-menu (affiché au survol sur ordinateur, en pastilles sur mobile) */
+  children?: { label: string; href: string }[];
+};
+
+const navigation: NavItem[] = [
+  { label: "Accueil", href: "/" },
+  { label: "À propos", href: "/a-propos" },
+  { label: "Services", href: "/services" },
+  {
+    label: "Portfolio",
+    href: "/portfolio",
+    // Généré depuis src/config/portfolio-categories.ts
+    children: [
+      { label: "Tous", href: "/portfolio" },
+      ...portfolioCategories.map((category) => ({
+        label: category.label,
+        href: `/portfolio/${category.slug}`,
+      })),
+    ],
+  },
+  { label: "Contact", href: "/contact" },
+];
+
 export const siteConfig = {
   name: "ADSTUDIOZ",
   signature: "Votre histoire, notre passion.",
@@ -39,15 +67,7 @@ export const siteConfig = {
     height: 1089,
   },
 
-  navigation: [
-    { label: "Accueil", href: "/" },
-    { label: "À propos", href: "/a-propos" },
-    { label: "Services", href: "/services" },
-    // { label: "Offres", href: "/offres" },
-    { label: "Portfolio", href: "/portfolio" },
-    { label: "Galeries", href: "/galeries" },
-    { label: "Contact", href: "/contact" },
-  ],
+  navigation,
 
   cta: {
     label: "Demander un devis",

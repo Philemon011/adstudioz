@@ -1,0 +1,41 @@
+Les 2 étapes
+
+1. Ajoute la catégorie dans ce fichier
+
+src/config/portfolio-categories.ts (remplace tout, exemple avec Mariages et Portraits ajoutés)
+
+ts
+export type PortfolioCategory = {
+  /** Nom du dossier dans public/images/portfolio/ */
+  slug: string;
+  /** Nom affiché sur le site */
+  label: string;
+};
+
+// L'ordre de cette liste est l'ordre des filtres sur le site.
+// Pour ajouter une catégorie : ajoute une ligne ici et crée le dossier du même nom.
+export const portfolioCategories: PortfolioCategory[] = [
+  { slug: "evenements", label: "Événements" },
+  { slug: "mariages", label: "Mariages" },
+  { slug: "portraits", label: "Portraits" },
+  { slug: "publicite", label: "Publicité & entreprise" },
+  { slug: "production", label: "Production audiovisuelle" },
+  { slug: "contenu", label: "Contenu & photographie" },
+];
+
+2. Crée le dossier du même nom et dépose les photos dedans
+
+bash
+mkdir -p public/images/portfolio/{mariages,portraits}
+
+Puis arrête et relance npm run dev (la liste des photos est mise en cache, comme vu avec l’erreur précédente).
+
+Règles à retenir
+slug = le nom exact du dossier : minuscules, sans accents ni espaces (mariages, pas Mariages ni mariage d'été).
+label = le texte affiché sur la pastille et dans la visionneuse. Il peut contenir des accents, des espaces et des &.
+L’ordre de la liste détermine l’ordre des filtres, et aussi l’ordre du mélange dans « Tous ».
+Une catégorie sans photo n’apparaît pas sur le site. Tu peux donc préparer des catégories à l’avance sans rien casser.
+Pour supprimer ou renommer une catégorie : retire ou modifie sa ligne. Les photos du dossier ne s’affichent plus tant que le dossier n’a pas de ligne dans cette liste.
+Un conseil
+
+Garde un nombre raisonnable de catégories, 4 à 7 au maximum. Au-delà, les filtres deviennent une longue rangée à parcourir, et chaque catégorie risque de n’avoir que quelques photos, ce qui fait paraître le portfolio plus pauvre. Mieux vaut peu de catégories bien remplies (8 à 12 photos chacune).
