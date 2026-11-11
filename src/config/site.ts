@@ -33,6 +33,7 @@ const navigation: NavItem[] = [
     ],
   },
   { label: "Publicité", href: "/publicite" },
+  { label: "Contenu numérique", href: "/contenu-numerique" },
   { label: "Contact", href: "/contact" },
 ];
 
