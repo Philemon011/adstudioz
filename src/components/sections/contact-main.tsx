@@ -3,6 +3,7 @@ import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { ContactForm } from "@/components/forms/contact-form";
 import { CtaLink } from "@/components/ui/cta-link";
 import { Reveal } from "@/components/ui/reveal";
+import { SocialLinks } from "@/components/ui/social-links";
 
 const linkClass =
   "rounded-sm transition-colors duration-300 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary";
@@ -10,7 +11,7 @@ const linkClass =
 const labelClass = "text-xs text-muted-foreground";
 
 export function ContactMain() {
-  const { contact, social, location } = siteConfig;
+  const { contact, location } = siteConfig;
 
   return (
     <section
@@ -68,20 +69,9 @@ export function ContactMain() {
                 </div>
 
                 <div className="py-5">
-                  <dt className={labelClass}>Instagram</dt>
-                  <dd className="mt-1.5 text-lg">
-                    <a
-                      href={social.instagram.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={linkClass}
-                    >
-                      {social.instagram.handle}
-                      <span className="sr-only">
-                        {" "}
-                        (s’ouvre dans un nouvel onglet)
-                      </span>
-                    </a>
+                  <dt className={labelClass}>Réseaux sociaux</dt>
+                  <dd className="mt-3">
+                    <SocialLinks />
                   </dd>
                 </div>
 

@@ -7,6 +7,15 @@ export type NavItem = {
   children?: { label: string; href: string }[];
 };
 
+export type SocialId = "instagram" | "youtube" | "facebook" | "tiktok";
+
+export type SocialLink = {
+  id: SocialId;
+  label: string;
+  handle: string;
+  href: string;
+};
+
 const navigation: NavItem[] = [
   { label: "Accueil", href: "/" },
   { label: "À propos", href: "/a-propos" },
@@ -24,6 +33,35 @@ const navigation: NavItem[] = [
     ],
   },
   { label: "Contact", href: "/contact" },
+];
+
+// WhatsApp est géré à part (il utilise le numéro de "contact.whatsapp").
+// Pour ajouter un réseau : décommente sa ligne et renseigne l'adresse du compte.
+const social: SocialLink[] = [
+  {
+    id: "instagram",
+    label: "Instagram",
+    handle: "@ad_studioz",
+    href: "https://www.instagram.com/ad_studioz/",
+  },
+  {
+    id: "youtube",
+    label: "YouTube",
+    handle: "@adproductiontv",
+    href: "https://www.youtube.com/@adproductiontv",
+  },
+  // {
+  //   id: "facebook",
+  //   label: "Facebook",
+  //   handle: "ADSTUDIOZ",
+  //   href: "https://www.facebook.com/...",
+  // },
+  // {
+  //   id: "tiktok",
+  //   label: "TikTok",
+  //   handle: "@...",
+  //   href: "https://www.tiktok.com/@...",
+  // },
 ];
 
 export const siteConfig = {
@@ -53,12 +91,7 @@ export const siteConfig = {
     whatsappLabel: "+229 01 95 18 78 46",
   },
 
-  social: {
-    instagram: {
-      handle: "@ad_studioz",
-      href: "https://www.instagram.com/ad_studioz/",
-    },
-  },
+  social,
 
   logo: {
     light: "/brand/logo.png",

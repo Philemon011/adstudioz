@@ -4,6 +4,7 @@ import { siteConfig } from "@/config/site";
 import { services } from "@/config/services";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { CurrentYear } from "@/components/ui/current-year";
+import { SocialLinks } from "@/components/ui/social-links";
 
 const linkClass =
   "inline-block rounded-sm text-muted-foreground transition-colors duration-300 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary";
@@ -104,20 +105,12 @@ export function Footer() {
                   {siteConfig.contact.email}
                 </a>
               </li>
-              <li>
-                <a
-                  href={siteConfig.social.instagram.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={linkClass}
-                >
-                  Instagram · {siteConfig.social.instagram.handle}
-                  <span className="sr-only"> (s’ouvre dans un nouvel onglet)</span>
-                </a>
-              </li>
               <li className="pt-1 text-muted-foreground">
                 {siteConfig.location.cities.join(" · ")},{" "}
                 {siteConfig.location.country}
+              </li>
+              <li className="pt-2">
+                <SocialLinks />
               </li>
             </ul>
           </div>
