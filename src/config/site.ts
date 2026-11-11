@@ -32,6 +32,7 @@ const navigation: NavItem[] = [
       })),
     ],
   },
+  { label: "Publicité", href: "/publicite" },
   { label: "Contact", href: "/contact" },
 ];
 
